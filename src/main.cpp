@@ -6,7 +6,7 @@
 void vescTask(void* parameter);
 void wifiTask(void* parameter);
 
-TaskHandle_t WifiTask, CheckSpeedZero, VescTask, HallEffectTask;
+TaskHandle_t CheckSpeedZero, VescTask, HallEffectTask;
 
 void setup() {
 
@@ -31,17 +31,17 @@ void loop()
   //delay(1500);
 }
 
-void wifiTask(void* parameter)
-{
-  // Wifi Setup
-    wifi_begin();
-  for(;;)
-  {
-    // Wifi Loop
-    postJSON();
-    delay(250);
-  }
-}
+// void wifiTask(void* parameter)
+// {
+//   // Wifi Setup
+//     wifi_begin();
+//   for(;;)
+//   {
+//     // Wifi Loop
+//     postJSON();
+//     delay(250);
+//   }
+// }
 
 void vescTask(void* parameter)
 {
