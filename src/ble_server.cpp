@@ -2,10 +2,13 @@
 #include <BLEUtils.h>
 #include <BLEServer.h>
 #include <BLE2902.h>
+#include <cstdbool>
 
 BLEServer *server = NULL;
 BLECharacteristic *characteristic = NULL;
 int connectedClients = 0;
+uint32_t value = 0;
+bool deviceConnected = false;
 
 // UUID for the ESP32
 #define SERVICE_UUID "8e1dfb38-f3a5-4b3f-8f99-a30c0f61fc4e"
@@ -108,4 +111,67 @@ void setup(){
     BLEDevice::startAdvertising();
     // advertising->setMinPreferred(); // I assume this has something to do with the min advertising interval
     Serial.println("Waiting for client connections to notify...");
+}
+
+// BLE send function
+void postJSON() {
+  // Create Request (Don't think BLE uses http in this case)
+//   HTTPClient http;
+//   http.useHTTP10(true);
+//   http.begin(url);
+//   http.addHeader("Content-Type", "application/json");
+  // Create JSON Data Packet
+  DynamicJsonDocument doc(4096);
+  String resp_str;
+  struct data_packet new_data = get_packet(); //get data packet from recive thread 
+  doc["rpm"]          = std::to_string(new_data.rpm);
+  doc["speed"]        = std::to_string(new_data.speed_wheel);
+  doc["voltage"]      = std::to_string(new_data.volts);
+  doc["temp_mos"]     = std::to_string(new_data.temp_mosfet);
+  doc["temp_motor"]   = std::to_string(new_data.temp_motor);
+  doc["current_batt"] = std::to_string(new_data.current_batt);
+  doc["fault_code"]   = std::to_string(new_data.fault_code);
+  doc["tacho"]        = std::to_string(new_data.tacho_wheel);
+  doc["net_energy"]   = std::to_string(new_data.watt_hours);
+  doc["current_motor"] = std::to_string(new_data.motor_current);
+
+
+  serializeJson(doc, resp_str);
+  // POST data to server
+//   int httpResponseCode = http.POST(resp_str);
+
+//   http.end();
+}
+
+void send(){
+    // loop sending values with notification to clients
+    if (connectedClients > 0) {
+        Serial.print("Notifying value: ");
+        Serial.print(value);
+        Serial.print(" to ");
+        Serial.print(connectedClients);
+        Serial.println(" client(s)");
+        pCharacteristic->setValue((uint8_t *)&value, 4);
+        pCharacteristic->notify();
+        value++;
+        // Bluetooth stack will go into congestion, if too many packets are sent.
+        // In 6 hours of testing, I was able to go as low as 3ms.
+        // When using core debug level "debug" or "verbose", the delay can be increased in
+        // order to reduce the number of debug messages in the serial monitor.
+        delay(100);
+    }
+
+    // Disconnecting - restart advertising when no clients are connected
+    if (connectedClients == 0 && deviceConnected) {
+        delay(500);                   // give the bluetooth stack the chance to get things ready
+        pServer->startAdvertising();  // restart advertising
+        Serial.println("No clients connected, restarting advertising");
+        deviceConnected = false;
+    }
+
+    // Connecting - update state when first client connects
+    if (connectedClients > 0 && !deviceConnected) {
+        // do stuff here on first connecting
+        deviceConnected = true;
+    }
 }
