@@ -1,9 +1,9 @@
 #include "Arduino.h"
 #include "speedometer.h"
 #include "vesc_link.h"
+#include "ble_server.h"
 
 void vescTask(void* parameter);
-void wifiTask(void* parameter);
 
 TaskHandle_t CheckSpeedZero, VescTask, HallEffectTask;
 
@@ -14,33 +14,17 @@ void setup() {
   //attachInterrupt(digitalPinToInterrupt(2), hallEffectISR, RISING); //Both seem to work, should test if one is more stable than other on car
   //pinMode(2, INPUT_PULLUP);
 
-  
+  setupBLE();
 
   xTaskCreate(hallEffectTask, "hallEffectTask", 10000, NULL, 1, &HallEffectTask);
   xTaskCreate(checkSpeedZero, "checkSpeedZero", 10000, NULL, 2, &CheckSpeedZero);
   xTaskCreate(vescTask      , "VescTask"      , 10000, NULL, 2, &VescTask);
-  xTaskCreate(wifiTask      , "WifiTask"      , 10000, NULL, 2, &WifiTask);
 }
 
 void loop() 
 {
-  //printRPM();
-  //printTacho();
-  //printSpeed();
-  //delay(1500);
+  
 }
-
-// void wifiTask(void* parameter)
-// {
-//   // Wifi Setup
-//     wifi_begin();
-//   for(;;)
-//   {
-//     // Wifi Loop
-//     postJSON();
-//     delay(250);
-//   }
-// }
 
 void vescTask(void* parameter)
 {

@@ -1,4 +1,3 @@
-#include "wifi_send.h"
 #include "Arduino.h"
 #include "speedometer.h"
 

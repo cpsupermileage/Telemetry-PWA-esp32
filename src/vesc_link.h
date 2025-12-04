@@ -7,20 +7,19 @@
 #define WHEEL_DIAMETER 20
 #define RPM_TO_MPH ((WHEEL_DIAMETER * PI) / 1056) //define the conversion to MPH for later use
 
+// SMV
 //define the data struct globally, make it accessible to everything
 struct data_packet{ 
+    float tempMOSFET;
+    float tempMotor;
+    float motorCurrent;
+    float inputCurrent;
+    float dutyCycle;
+    float tacho;
     float rpm;
-    float speed_motor;
-    float speed_wheel;
-    int   tacho_wheel;
     float volts;
-    float amps_batt;
-    float watt_hours;
-    float temp_motor;
-    float current_batt;
-    float temp_mosfet;
-    int   fault_code;
-    float motor_current;
+    float wattHours;
+    int errors;
 };
 
 struct data_packet get_packet();

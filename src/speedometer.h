@@ -1,5 +1,5 @@
-#ifndef spedometer_h
-#define spedometer_h
+#ifndef speedometer_h
+#define speedometer_h
 
 #define MIN_INTERRUPT_COUNT             1
 #define INTERRUPT_CHECK_CNT_INTERVAL    1750 //milliseconds
