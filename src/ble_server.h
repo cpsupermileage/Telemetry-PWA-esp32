@@ -13,15 +13,15 @@
 
 // Characteristic UUIDS
 #define TEMP_MOSFET "2A1E" // Intermediate Temp
-#define TEMP_MOTOR 0x2a1c // Temp Measurement
-#define MOTOR_CURRENT 0x2aee // Electric Current
-#define INPUT_CURRENT 0x2ae0 // Avg Current
-#define DUTY_CYCLE 0x2c10 // Work Cycle Data
-#define TACHO 0x2c09 // Rotational Speed
-#define RPM 0x2a67 // Location and speed
-#define VOLTS 0x2b18 // Voltage
-#define WATT_HOURS 0x2af2 // Energy
-#define ERRORS 0x2bbb // Status flags
+#define TEMP_MOTOR "2A1C" // Temp Measurement
+#define MOTOR_CURRENT "2AEE" // Electric Current
+#define INPUT_CURRENT "2AE0" // Avg Current
+#define DUTY_CYCLE "2C10" // Work Cycle Data
+#define TACHO "2C09" // Rotational Speed
+#define RPM "2A67" // Location and speed
+#define VOLTS "2B18" // Voltage
+#define WATT_HOURS "2AF2" // Energy
+#define ERRORS "2BBB" // Status flags
 
 
 void setupBLE();

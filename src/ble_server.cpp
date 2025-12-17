@@ -13,7 +13,7 @@ BLECharacteristic *charTacho;
 BLECharacteristic *charRPM;
 BLECharacteristic *charVolts;
 BLECharacteristic *charWattHours;
-BLECharacteristic *charError;
+BLECharacteristic *charErrors;
 
 class MyServerCallbacks : public BLEServerCallbacks {
     void onConnect(BLEServer *server){
@@ -45,16 +45,16 @@ void setupBLE(){
 
 
     // Create Characteristics here (unsure of what characteristics exist within services yet)
-    charTempMOSFET = service->createCharacteristic(TEMP_MOSFET, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-    pCharacteristic1 = pService->createCharacteristic("2A1C", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-    pCharacteristic2 = pService->createCharacteristic("2AEE", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-    pCharacteristic3 = pService->createCharacteristic("2AE0", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-    pCharacteristic4 = pService->createCharacteristic("2C10", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-    pCharacteristic5 = pService->createCharacteristic("2C09", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-    pCharacteristic6 = pService->createCharacteristic("2A67", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-    pCharacteristic7 = pService->createCharacteristic("2B18", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-    pCharacteristic8 = pService->createCharacteristic("2AF2", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-    pCharacteristic9 = pService->createCharacteristic("2BBB", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+    charTempMOSFET   = service->createCharacteristic(TEMP_MOSFET, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+    charTempMotor    = service->createCharacteristic(TEMP_MOTOR, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+    charMotorCurrent = service->createCharacteristic(MOTOR_CURRENT, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+    charInputCurrent = service->createCharacteristic(INPUT_CURRENT, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+    charDutyCycle    = service->createCharacteristic(DUTY_CYCLE, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+    charTacho        = service->createCharacteristic(TACHO, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+    charRPM          = service->createCharacteristic(RPM, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+    charVolts        = service->createCharacteristic(VOLTS, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+    charWattHours    = service->createCharacteristic(WATT_HOURS, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+    charErrors       = service->createCharacteristic(ERRORS, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
 
     service->start();
 
