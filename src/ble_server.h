@@ -21,7 +21,7 @@
 #define RPM "2A67" // Location and speed
 #define VOLTS "2B18" // Voltage
 #define WATT_HOURS "2AF2" // Energy
-#define ERRORS "2BBB" // Status flags
+#define ERROR "2BBB" // Status flags
 
 
 void setupBLE();

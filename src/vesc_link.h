@@ -15,11 +15,11 @@ struct data_packet{
     float motorCurrent;
     float inputCurrent;
     float dutyCycle;
-    float tacho;
+    long tacho;
     float rpm;
     float volts;
     float wattHours;
-    int errors;
+    uint8_t error;
 };
 
 struct data_packet get_packet();

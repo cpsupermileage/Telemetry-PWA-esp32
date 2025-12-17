@@ -13,7 +13,7 @@ BLECharacteristic *charTacho;
 BLECharacteristic *charRPM;
 BLECharacteristic *charVolts;
 BLECharacteristic *charWattHours;
-BLECharacteristic *charErrors;
+BLECharacteristic *charError;
 
 class MyServerCallbacks : public BLEServerCallbacks {
     void onConnect(BLEServer *server){
@@ -54,7 +54,7 @@ void setupBLE(){
     charRPM          = service->createCharacteristic(RPM, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
     charVolts        = service->createCharacteristic(VOLTS, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
     charWattHours    = service->createCharacteristic(WATT_HOURS, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-    charErrors       = service->createCharacteristic(ERRORS, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+    charError       = service->createCharacteristic(ERROR, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
 
     service->start();
 
@@ -68,8 +68,26 @@ void setupBLE(){
 void sendBLE(data_packet data){
     // loop sending values with notification to clients
     if (connectedClients > 0) {
-        charTempMOSFET->setValue((uint8_t *)&data.tempMOSFET, 4);
-        charRPM->setValue((uint8_t *)&data.rpm, 4);
+        charTempMOSFET->setValue((float *)&data.tempMOSFET, sizeof(&data.tempMOSFET));
+        charTempMotor->setValue((float *)&data.tempMotor, sizeof(&data.tempMotor));
+        charMotorCurrent->setValue((float *)&data.motorCurrent, sizeof(&data.motorCurrent));
+        charInputCurrent->setValue((float *)&data.inputCurrent, sizeof(&data.inputCurrent));
+        charDutyCycle->setValue((float *)&data.dutyCycle, sizeof(&data.dutyCycle));
+        charTacho->setValue((long *)&data.tacho, sizeof(&data.tacho));
+        charRPM->setValue((float *)&data.rpm, sizeof(&data.rpm));
+        charVolts->setValue((float *)&data.volts, sizeof(&data.volts));
+        charWattHours->setValue((float *)&data.wattHours, sizeof(&data.wattHours));
+        charError->setValue((uint8_t *)&data.error, sizeof(&data.error));
+
+        charTempMOSFET->notify();
+        charTempMotor->notify();
+        charMotorCurrent->notify();
+        charInputCurrent->notify();
+        charDutyCycle->notify();
+        charTacho->notify();
         charRPM->notify();
+        charVolts->notify();
+        charWattHours->notify();
+        charError->notify();
     }
 }

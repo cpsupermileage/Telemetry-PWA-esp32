@@ -25,7 +25,7 @@ void THD_SERIAL(){
             next_data.rpm = UART.data.rpm;
             next_data.volts = UART.data.inpVoltage;
             next_data.wattHours = UART.data.wattHours;
-            next_data.errors = UART.data.error;
+            next_data.error = UART.data.error;
 
             sendBLE(next_data);
         }
