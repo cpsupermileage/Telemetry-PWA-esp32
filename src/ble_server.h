@@ -1,10 +1,9 @@
 #ifndef BLE_SERVER_H
 #define BLE_SERVER_H
 
-#include <BLEDevice.h>
-#include <BLEUtils.h>
-#include <BLEServer.h>
-#include <BLE2902.h>
+#include <NimBLEDevice.h>
+#include <NimBLEUtils.h>
+#include <NimBLEServer.h>
 #include <Arduino.h>
 #include "vesc_link.h"
 
