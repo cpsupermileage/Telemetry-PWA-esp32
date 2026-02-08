@@ -7,13 +7,6 @@ VescUart UART; //object that will recive all the values from vesc
 struct data_packet next_data;
 
 void THD_SERIAL(){
-        //Serial.println("SerialThread Running...");
-        // next_data.speed_wheel = speedo_get_speed();
-        // next_data.tacho_wheel = speedo_get_tacho();
-        
-    //takes in a pointer to an int which will be set to 1 by WIFI thread when it is ready for the next packet.
-    //we set it to 0 in this thread when we are done writing to indicate to WIFI new data is ready
-    //read the data from the VESC only if we are rdy, if else we continue doing nothing till this gets set
         if (UART.getVescValues()){
             //if the data call succeeds, populate the struct.
             next_data.tempMOSFET = UART.data.tempMosfet;
@@ -26,6 +19,28 @@ void THD_SERIAL(){
             next_data.volts = UART.data.inpVoltage;
             next_data.wattHours = UART.data.wattHours;
             next_data.error = UART.data.error;
+
+            Serial.print("tempMosfet: ");
+            Serial.print(next_data.tempMOSFET);
+            Serial.print(" tempMotor: ");
+            Serial.print(next_data.tempMotor);
+            Serial.print(" motorCurrent: ");
+            Serial.print(next_data.motorCurrent);
+            Serial.print(" inputCurrent: ");
+            Serial.print(next_data.inputCurrent);
+            Serial.print(" dutyCycle: ");
+            Serial.print(next_data.dutyCycle);
+            Serial.print(" tacho: ");
+            Serial.print(next_data.tacho);
+            Serial.print(" rpm: ");
+            Serial.print(next_data.rpm);
+            Serial.print(" volts: ");
+            Serial.print(next_data.volts);
+            Serial.print(" wattHours: ");
+            Serial.print(next_data.wattHours);
+            Serial.print(" error: ");
+            Serial.print(next_data.error);
+            Serial.println();
 
             sendBLE(next_data);
         }

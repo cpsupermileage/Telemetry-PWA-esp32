@@ -8,17 +8,25 @@ void vescTask(void* parameter);
 TaskHandle_t CheckSpeedZero, VescTask, HallEffectTask;
 
 void setup() {
-
   Serial.begin(115200);
-  attachInterrupt(digitalPinToInterrupt(2), hallEffectISR, FALLING); //Attaches hall interrupt to pin P2 of Espressif ESP32
+
+  #ifdef RGB_BUILTIN
+  neopixelWrite(RGB_BUILTIN, RGB_BRIGHTNESS/2, 0, 0);  // Red
+  #endif
+
+  // attachInterrupt(digitalPinToInterrupt(2), hallEffectISR, FALLING); //Attaches hall interrupt to pin P2 of Espressif ESP32
   //attachInterrupt(digitalPinToInterrupt(2), hallEffectISR, RISING); //Both seem to work, should test if one is more stable than other on car
   //pinMode(2, INPUT_PULLUP);
 
   setupBLE();
 
-  xTaskCreate(hallEffectTask, "hallEffectTask", 10000, NULL, 1, &HallEffectTask);
-  xTaskCreate(checkSpeedZero, "checkSpeedZero", 10000, NULL, 2, &CheckSpeedZero);
+  // xTaskCreate(hallEffectTask, "hallEffectTask", 10000, NULL, 1, &HallEffectTask);
+  // xTaskCreate(checkSpeedZero, "checkSpeedZero", 10000, NULL, 2, &CheckSpeedZero);
   xTaskCreate(vescTask      , "VescTask"      , 10000, NULL, 2, &VescTask);
+
+  #ifdef RGB_BUILTIN
+  neopixelWrite(RGB_BUILTIN, 0, RGB_BRIGHTNESS/2, 0);  // Green
+  #endif
 }
 
 void loop() 
