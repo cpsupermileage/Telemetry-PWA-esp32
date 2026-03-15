@@ -8,6 +8,11 @@ struct data_packet next_data;
 
 void THD_SERIAL(){
         if (UART.getVescValues()){
+
+            #ifdef RGB_BUILTIN
+            neopixelWrite(RGB_BUILTIN, 0, RGB_BRIGHTNESS/2, 0);  // Green
+            #endif
+
             //if the data call succeeds, populate the struct.
             next_data.tempMOSFET = UART.data.tempMosfet;
             next_data.tempMotor = UART.data.tempMotor;

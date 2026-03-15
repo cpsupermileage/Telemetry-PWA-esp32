@@ -25,7 +25,7 @@ void setup() {
   xTaskCreate(vescTask      , "VescTask"      , 10000, NULL, 2, &VescTask);
 
   #ifdef RGB_BUILTIN
-  neopixelWrite(RGB_BUILTIN, 0, RGB_BRIGHTNESS/2, 0);  // Green
+  neopixelWrite(RGB_BUILTIN, RGB_BRIGHTNESS/2, RGB_BRIGHTNESS/2, 0);  // Yellow
   #endif
 }
 
