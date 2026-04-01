@@ -12,6 +12,10 @@ IPAddress subnet(255, 255, 255, 0);
 
 WebServer wifi_server(80);
 
+void sendOK() {
+    wifi_server.send(200, "text/plain", "OK");
+}
+
 void sendData() {
     struct data_packet data = get_packet();
     
@@ -43,7 +47,8 @@ void setupWIFI(){
     Serial.print(WiFi.softAPIP());
     Serial.println("/");
 
-    wifi_server.on("/", sendData);
+    wifi_server.on("/", sendOK);
+    wifi_server.on("/data", sendData);
     
     wifi_server.begin();
 }
