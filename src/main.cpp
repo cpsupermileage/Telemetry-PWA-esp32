@@ -1,7 +1,14 @@
+#include "config.h"
 #include "Arduino.h"
-#include "speedometer.h"
 #include "vesc_link.h"
+
+
+#ifdef COMM_METHOD_BLE
 #include "ble_server.h"
+#endif
+#ifdef COMM_METHOD_WIFI
+#include "wifi_server.h"
+#endif
 
 void vescTask(void* parameter);
 
@@ -25,8 +32,14 @@ void setup() {
   //pinMode(2, INPUT_PULLUP);
   //Serial.println("Interrupts attached...");
 
+  #ifdef COMM_METHOD_BLE
   setupBLE();
   Serial.println("Setup BLE...");
+  #endif
+  #ifdef COMM_METHOD_WIFI
+  setupWIFI();
+  Serial.println("Setup HTTP Server...");
+  #endif
 
   // xTaskCreate(hallEffectTask, "hallEffectTask", 10000, NULL, 1, &HallEffectTask);
   // xTaskCreate(checkSpeedZero, "checkSpeedZero", 10000, NULL, 2, &CheckSpeedZero);
@@ -42,7 +55,9 @@ void setup() {
 
 void loop() 
 {
-  
+  #ifdef COMM_METHOD_WIFI
+  loopWIFI();
+  #endif
 }
 
 void vescTask(void* parameter)
@@ -58,9 +73,9 @@ void vescTask(void* parameter)
   
 }
 
-void hallEffectISR()
-{
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-    xTaskNotifyFromISR(HallEffectTask, 0, eNoAction, &xHigherPriorityTaskWoken);
+// void hallEffectISR()
+// {
+//     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+//     xTaskNotifyFromISR(HallEffectTask, 0, eNoAction, &xHigherPriorityTaskWoken);
     
-}
+// }

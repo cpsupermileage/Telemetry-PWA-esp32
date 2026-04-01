@@ -1,10 +1,7 @@
 #include "vesc_link.h"
-#include "speedometer.h"
-#include <HardwareSerial.h>
-#include "ble_server.h"
 
 VescUart UART; //object that will recive all the values from vesc
-struct data_packet next_data;
+struct data_packet next_data = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0L, 0.0f, 0.0f, 0.0f, (uint8_t)0};
 
 void THD_SERIAL(){
     Serial.println("Getting values...");
@@ -48,7 +45,10 @@ void THD_SERIAL(){
         Serial.print(next_data.error);
         Serial.println();
 
+        #ifdef COMM_METHOD_BLE
         sendBLE(next_data);
+        #endif
+
     }
 }
 

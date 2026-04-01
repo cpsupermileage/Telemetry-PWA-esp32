@@ -2,25 +2,16 @@
 #define VESC_LINK_H_
 
 #include "VescUart.h"
+#include <HardwareSerial.h>
+#include "struct.h"
+#include "config.h"
+#ifdef COMM_METHOD_BLE
+#include "ble_server.h"
+#endif
 
 #define HALL_PIN 14 //set to the pin we attatch the hall sensor to
 #define WHEEL_DIAMETER 20
 #define RPM_TO_MPH ((WHEEL_DIAMETER * PI) / 1056) //define the conversion to MPH for later use
-
-// SMV
-//define the data struct globally, make it accessible to everything
-struct data_packet{ 
-    float tempMOSFET;
-    float tempMotor;
-    float motorCurrent;
-    float inputCurrent;
-    float dutyCycle;
-    long tacho;
-    float rpm;
-    float volts;
-    float wattHours;
-    uint8_t error;
-};
 
 struct data_packet get_packet();
 

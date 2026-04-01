@@ -5,7 +5,7 @@
 #include <NimBLEUtils.h>
 #include <NimBLEServer.h>
 #include <Arduino.h>
-#include "vesc_link.h"
+#include "struct.h"
 
 // UUID for the ESP32
 #define SERVICE_UUID "8e1dfb38-f3a5-4b3f-8f99-a30c0f61fc4e"

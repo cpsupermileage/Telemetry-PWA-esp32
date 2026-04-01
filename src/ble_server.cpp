@@ -70,18 +70,18 @@ void setupBLE(){
 
 void sendBLE(data_packet data){
     // loop sending values with notification to clients
+    charTempMOSFET->setValue((uint8_t *)&data.tempMOSFET, sizeof(&data.tempMOSFET));
+    charTempMotor->setValue((uint8_t *)&data.tempMotor, sizeof(&data.tempMotor));
+    charMotorCurrent->setValue((uint8_t *)&data.motorCurrent, sizeof(&data.motorCurrent));
+    charInputCurrent->setValue((uint8_t *)&data.inputCurrent, sizeof(&data.inputCurrent));
+    charDutyCycle->setValue((uint8_t *)&data.dutyCycle, sizeof(&data.dutyCycle));
+    charTacho->setValue((uint8_t *)&data.tacho, sizeof(&data.tacho));
+    charRPM->setValue((uint8_t *)&data.rpm, sizeof(&data.rpm));
+    charVolts->setValue((uint8_t *)&data.volts, sizeof(&data.volts));
+    charWattHours->setValue((uint8_t *)&data.wattHours, sizeof(&data.wattHours));
+    charError->setValue((uint8_t *)&data.error, sizeof(&data.error));
+    
     if (connectedClients > 0) {
-        charTempMOSFET->setValue((uint8_t *)&data.tempMOSFET, sizeof(&data.tempMOSFET));
-        charTempMotor->setValue((uint8_t *)&data.tempMotor, sizeof(&data.tempMotor));
-        charMotorCurrent->setValue((uint8_t *)&data.motorCurrent, sizeof(&data.motorCurrent));
-        charInputCurrent->setValue((uint8_t *)&data.inputCurrent, sizeof(&data.inputCurrent));
-        charDutyCycle->setValue((uint8_t *)&data.dutyCycle, sizeof(&data.dutyCycle));
-        charTacho->setValue((uint8_t *)&data.tacho, sizeof(&data.tacho));
-        charRPM->setValue((uint8_t *)&data.rpm, sizeof(&data.rpm));
-        charVolts->setValue((uint8_t *)&data.volts, sizeof(&data.volts));
-        charWattHours->setValue((uint8_t *)&data.wattHours, sizeof(&data.wattHours));
-        charError->setValue((uint8_t *)&data.error, sizeof(&data.error));
-
         charTempMOSFET->notify();
         charTempMotor->notify();
         charMotorCurrent->notify();
