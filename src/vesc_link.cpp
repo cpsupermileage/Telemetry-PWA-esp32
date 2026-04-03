@@ -21,7 +21,12 @@ void THD_SERIAL(){
         next_data.motorCurrent = UART.data.avgMotorCurrent;
         next_data.inputCurrent = UART.data.avgInputCurrent;
         next_data.dutyCycle = UART.data.dutyCycleNow;
+        #ifdef TACHO_FROM_VESC
         next_data.tacho = UART.data.tachometerAbs;
+        #endif
+        #ifdef TACHO_FROM_HALL
+        next_data.tacho = getTacho();
+        #endif
         next_data.rpm = UART.data.rpm;
         next_data.volts = UART.data.inpVoltage;
         next_data.wattHours = UART.data.wattHours;

@@ -5,6 +5,7 @@
 #include <HardwareSerial.h>
 #include "struct.h"
 #include "config.h"
+#include "speedometer.h"
 #ifdef COMM_METHOD_BLE
 #include "ble_server.h"
 #endif

@@ -1,6 +1,7 @@
 #include "config.h"
 #include "Arduino.h"
 #include "vesc_link.h"
+#include "speedometer.h"
 
 
 #ifdef COMM_METHOD_BLE
@@ -31,10 +32,10 @@ void setup() {
   neopixelWrite(RGB_BUILTIN, RGB_BRIGHTNESS/2, 0, 0);  // Red
   #endif
 
-  // attachInterrupt(digitalPinToInterrupt(2), hallEffectISR, FALLING); //Attaches hall interrupt to pin P2 of Espressif ESP32
-  //attachInterrupt(digitalPinToInterrupt(2), hallEffectISR, RISING); //Both seem to work, should test if one is more stable than other on car
-  //pinMode(2, INPUT_PULLUP);
-  //Serial.println("Interrupts attached...");
+  attachInterrupt(D4, hallEffectISR, FALLING); //Attaches hall interrupt to pin P2 of Espressif ESP32
+  //attachInterrupt(D4, hallEffectISR, RISING); //Both seem to work, should test if one is more stable than other on car
+  pinMode(D4, INPUT_PULLUP);
+  Serial.println("Interrupts attached...");
 
   #ifdef COMM_METHOD_BLE
   setupBLE();
@@ -45,8 +46,7 @@ void setup() {
   Serial.println("Setup HTTP Server...");
   #endif
 
-  // xTaskCreate(hallEffectTask, "hallEffectTask", 10000, NULL, 1, &HallEffectTask);
-  // xTaskCreate(checkSpeedZero, "checkSpeedZero", 10000, NULL, 2, &CheckSpeedZero);
+  xTaskCreate(hallEffectTask, "hallEffectTask", 10000, NULL, 1, &HallEffectTask);
   xTaskCreate(vescTask      , "VescTask"      , 10000, NULL, 2, &VescTask);
   Serial.println("Setup tasks...");
 
@@ -77,9 +77,9 @@ void vescTask(void* parameter)
   
 }
 
-// void hallEffectISR()
-// {
-//     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-//     xTaskNotifyFromISR(HallEffectTask, 0, eNoAction, &xHigherPriorityTaskWoken);
+void hallEffectISR()
+{
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    xTaskNotifyFromISR(HallEffectTask, 0, eNoAction, &xHigherPriorityTaskWoken);
     
-// }
+}

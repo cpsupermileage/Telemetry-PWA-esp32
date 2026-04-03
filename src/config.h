@@ -13,4 +13,14 @@
 
 
 
+// ********************************
+// What tacho value should be used
+// Uncomment the one to use
+
+//#define TACHO_FROM_VESC
+#define TACHO_FROM_HALL
+
+// ********************************
+
+
 #endif
