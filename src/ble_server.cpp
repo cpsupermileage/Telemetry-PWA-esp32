@@ -18,8 +18,8 @@ NimBLECharacteristic *charError;
 class MyServerCallbacks : public NimBLEServerCallbacks {
     void onConnect(NimBLEServer *server){
         connectedClients++;
-        Serial.print("Client connected. Total clients: ");
-        Serial.println(connectedClients);
+        Serial1.print("Client connected. Total clients: ");
+        Serial1.println(connectedClients);
 
         //continue advertising for more connections
         NimBLEDevice::startAdvertising();
@@ -27,8 +27,8 @@ class MyServerCallbacks : public NimBLEServerCallbacks {
 
     void onDisconnect(NimBLEServer *server){
         connectedClients--;
-        Serial.println("Device disconnected. Total clients: ");
-        Serial.println(connectedClients);
+        Serial1.println("Device disconnected. Total clients: ");
+        Serial1.println(connectedClients);
     }
 };
 
@@ -65,32 +65,30 @@ void setupBLE(){
     pAdvertising->enableScanResponse(true);
     pAdvertising->start();
 
-    Serial.println("Waiting for client connections to notify...");
+    Serial1.println("Waiting for client connections to notify...");
 }
 
-void sendBLE(data_packet data){
+void sendBLE(data_packet* data){
     // loop sending values with notification to clients
-    charTempMOSFET->setValue((uint8_t *)&data.tempMOSFET, sizeof(&data.tempMOSFET));
-    charTempMotor->setValue((uint8_t *)&data.tempMotor, sizeof(&data.tempMotor));
-    charMotorCurrent->setValue((uint8_t *)&data.motorCurrent, sizeof(&data.motorCurrent));
-    charInputCurrent->setValue((uint8_t *)&data.inputCurrent, sizeof(&data.inputCurrent));
-    charDutyCycle->setValue((uint8_t *)&data.dutyCycle, sizeof(&data.dutyCycle));
-    charTacho->setValue((uint8_t *)&data.tacho, sizeof(&data.tacho));
-    charRPM->setValue((uint8_t *)&data.rpm, sizeof(&data.rpm));
-    charVolts->setValue((uint8_t *)&data.volts, sizeof(&data.volts));
-    charWattHours->setValue((uint8_t *)&data.wattHours, sizeof(&data.wattHours));
-    charError->setValue((uint8_t *)&data.error, sizeof(&data.error));
+    charTempMOSFET->setValue((uint8_t *)&(data->tempMOSFET), sizeof(data->tempMOSFET));
+    charTempMotor->setValue((uint8_t *)&(data->tempMotor), sizeof(data->tempMotor));
+    charMotorCurrent->setValue((uint8_t *)&(data->motorCurrent), sizeof(data->motorCurrent));
+    charInputCurrent->setValue((uint8_t *)&(data->inputCurrent), sizeof(data->inputCurrent));
+    charDutyCycle->setValue((uint8_t *)&(data->dutyCycle), sizeof(data->dutyCycle));
+    charTacho->setValue((uint8_t *)&(data->tacho), sizeof(data->tacho));
+    charRPM->setValue((uint8_t *)&(data->rpm), sizeof(data->rpm));
+    charVolts->setValue((uint8_t *)&(data->volts), sizeof(data->volts));
+    charWattHours->setValue((uint8_t *)&(data->wattHours), sizeof(data->wattHours));
+    charError->setValue((uint8_t *)&(data->error), sizeof(data->error));
     
-    if (connectedClients > 0) {
-        charTempMOSFET->notify();
-        charTempMotor->notify();
-        charMotorCurrent->notify();
-        charInputCurrent->notify();
-        charDutyCycle->notify();
-        charTacho->notify();
-        charRPM->notify();
-        charVolts->notify();
-        charWattHours->notify();
-        charError->notify();
-    }
+    charTempMOSFET->notify();
+    charTempMotor->notify();
+    charMotorCurrent->notify();
+    charInputCurrent->notify();
+    charDutyCycle->notify();
+    charTacho->notify();
+    charRPM->notify();
+    charVolts->notify();
+    charWattHours->notify();
+    charError->notify();
 }

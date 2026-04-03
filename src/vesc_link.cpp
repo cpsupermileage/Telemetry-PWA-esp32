@@ -11,6 +11,10 @@ void THD_SERIAL(){
         neopixelWrite(RGB_BUILTIN, 0, RGB_BRIGHTNESS/2, 0);  // Green
         #endif
 
+        #ifdef LED_BUILTIN
+        digitalWrite(LED_BUILTIN, HIGH); 
+        #endif
+
         //if the data call succeeds, populate the struct.
         next_data.tempMOSFET = UART.data.tempMosfet;
         next_data.tempMotor = UART.data.tempMotor;
@@ -46,7 +50,7 @@ void THD_SERIAL(){
         Serial.println();
 
         #ifdef COMM_METHOD_BLE
-        sendBLE(next_data);
+        sendBLE(&next_data);
         #endif
 
     }
@@ -60,8 +64,8 @@ void UART_setup() {
     Serial.println("Serial initialized...");
 }
 
-struct data_packet get_packet(){
-    return next_data;
+struct data_packet* get_packet(){
+    return &next_data;
 }
 
 

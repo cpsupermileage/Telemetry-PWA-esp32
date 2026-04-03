@@ -1,5 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
+#include <Arduino.h>
 
 // ********************************
 // What method to use when communicating with the client
@@ -9,5 +10,7 @@
 //#define COMM_METHOD_WIFI
 
 // ********************************
+
+
 
 #endif

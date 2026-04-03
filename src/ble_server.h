@@ -25,6 +25,6 @@
 
 void setupBLE();
 
-void sendBLE(data_packet data);
+void sendBLE(data_packet* data);
 
 #endif

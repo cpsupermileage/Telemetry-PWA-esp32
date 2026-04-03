@@ -17,20 +17,20 @@ void sendOK() {
 }
 
 void sendData() {
-    struct data_packet data = get_packet();
+    data_packet* data = get_packet();
     
     // Create JSON Data Packet
     JsonDocument doc;
-    doc["tempMOSFET"] = std::to_string(data.tempMOSFET);
-    doc["tempMotor"] = std::to_string(data.tempMotor);
-    doc["motorCurrent"] = std::to_string(data.motorCurrent);
-    doc["inputCurrent"] = std::to_string(data.inputCurrent);
-    doc["dutyCycle"] = std::to_string(data.dutyCycle);
-    doc["tacho"] = std::to_string(data.tacho);
-    doc["rpm"] = std::to_string(data.rpm);
-    doc["volts"] = std::to_string(data.volts);
-    doc["wattHours"] = std::to_string(data.wattHours);
-    doc["error"] = std::to_string(data.error);
+    doc["tempMOSFET"] = std::to_string(data->tempMOSFET);
+    doc["tempMotor"] = std::to_string(data->tempMotor);
+    doc["motorCurrent"] = std::to_string(data->motorCurrent);
+    doc["inputCurrent"] = std::to_string(data->inputCurrent);
+    doc["dutyCycle"] = std::to_string(data->dutyCycle);
+    doc["tacho"] = std::to_string(data->tacho);
+    doc["rpm"] = std::to_string(data->rpm);
+    doc["volts"] = std::to_string(data->volts);
+    doc["wattHours"] = std::to_string(data->wattHours);
+    doc["error"] = std::to_string(data->error);
 
     String res;
     serializeJson(doc, res);

@@ -18,9 +18,13 @@ void setup() {
   #ifdef RGB_BUILTIN
   neopixelWrite(RGB_BUILTIN, 0, 0, 0);  // Off
   #endif
+  #ifdef LED_BUILTIN
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW); 
+  #endif
 
   Serial.begin(115200);
-  delay(1000); // Wait for serial
+  delay(1000); // Wait for Serial
   Serial.println("Initializing...");
 
   #ifdef RGB_BUILTIN
