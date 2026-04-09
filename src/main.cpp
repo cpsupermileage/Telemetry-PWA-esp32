@@ -1,7 +1,9 @@
 #include "config.h"
 #include "Arduino.h"
 #include "vesc_link.h"
+#ifdef TACHO_FROM_HALL
 #include "speedometer.h"
+#endif
 
 
 #ifdef COMM_METHOD_BLE
@@ -32,10 +34,12 @@ void setup() {
   neopixelWrite(RGB_BUILTIN, RGB_BRIGHTNESS/2, 0, 0);  // Red
   #endif
 
-  attachInterrupt(D4, hallEffectISR, FALLING); //Attaches hall interrupt to pin P2 of Espressif ESP32
+  #ifdef TACHO_FROM_HALL
+  attachInterrupt(HALL_PIN, hallEffectISR, FALLING); //Attaches hall interrupt to pin P2 of Espressif ESP32
   //attachInterrupt(D4, hallEffectISR, RISING); //Both seem to work, should test if one is more stable than other on car
-  pinMode(D4, INPUT_PULLUP);
+  pinMode(HALL_PIN, INPUT_PULLUP);
   Serial.println("Interrupts attached...");
+  #endif
 
   #ifdef COMM_METHOD_BLE
   setupBLE();
@@ -46,7 +50,9 @@ void setup() {
   Serial.println("Setup HTTP Server...");
   #endif
 
+  #ifdef TACHO_FROM_HALL
   xTaskCreate(hallEffectTask, "hallEffectTask", 10000, NULL, 1, &HallEffectTask);
+  #endif
   xTaskCreate(vescTask      , "VescTask"      , 10000, NULL, 2, &VescTask);
   Serial.println("Setup tasks...");
 
@@ -76,6 +82,7 @@ void vescTask(void* parameter)
   }
   
 }
+
 
 void hallEffectISR()
 {
