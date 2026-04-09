@@ -15,6 +15,17 @@ NimBLECharacteristic *charVolts;
 NimBLECharacteristic *charWattHours;
 NimBLECharacteristic *charError;
 
+NimBLEDescriptor *descTempMOSFET;
+NimBLEDescriptor *descTempMotor;
+NimBLEDescriptor *descMotorCurrent;
+NimBLEDescriptor *descInputCurrent;
+NimBLEDescriptor *descDutyCycle;
+NimBLEDescriptor *descTacho;
+NimBLEDescriptor *descRPM;
+NimBLEDescriptor *descVolts;
+NimBLEDescriptor *descWattHours;
+NimBLEDescriptor *descError;
+
 class MyServerCallbacks : public NimBLEServerCallbacks {
     void onConnect(NimBLEServer *server){
         connectedClients++;
@@ -44,7 +55,7 @@ void setupBLE(){
     service = server->createService(SERVICE_UUID);
 
 
-    // Create Characteristics here (unsure of what characteristics exist within services yet)
+    // Create Characteristics here
     charTempMOSFET   = service->createCharacteristic(TEMP_MOSFET, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
     charTempMotor    = service->createCharacteristic(TEMP_MOTOR, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
     charMotorCurrent = service->createCharacteristic(MOTOR_CURRENT, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
@@ -55,6 +66,43 @@ void setupBLE(){
     charVolts        = service->createCharacteristic(VOLTS, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
     charWattHours    = service->createCharacteristic(WATT_HOURS, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
     charError       = service->createCharacteristic(ERROR, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
+
+    // Create descriptors for each characteristic
+    descTempMOSFET   = charTempMOSFET->createDescriptor(DESC_USER_DESCRIPTION);
+    descTempMotor    = charTempMotor->createDescriptor(DESC_USER_DESCRIPTION);
+    descMotorCurrent = charMotorCurrent->createDescriptor(DESC_USER_DESCRIPTION);
+    descInputCurrent = charInputCurrent->createDescriptor(DESC_USER_DESCRIPTION);
+    descDutyCycle    = charDutyCycle->createDescriptor(DESC_USER_DESCRIPTION);
+    descTacho        = charTacho->createDescriptor(DESC_USER_DESCRIPTION);
+    descRPM          = charRPM->createDescriptor(DESC_USER_DESCRIPTION);
+    descVolts        = charVolts->createDescriptor(DESC_USER_DESCRIPTION);
+    descWattHours    = charWattHours->createDescriptor(DESC_USER_DESCRIPTION);
+    descError       = charError->createDescriptor(DESC_USER_DESCRIPTION);
+
+    // Add descriptors to characteristics
+    charTempMOSFET->addDescriptor(descTempMOSFET);
+    charTempMotor->addDescriptor(descTempMotor);
+    charMotorCurrent->addDescriptor(descMotorCurrent);
+    charInputCurrent->addDescriptor(descInputCurrent);
+    charDutyCycle->addDescriptor(descDutyCycle);
+    charTacho->addDescriptor(descTacho);
+    charRPM->addDescriptor(descRPM);
+    charVolts->addDescriptor(descVolts);
+    charWattHours->addDescriptor(descWattHours);
+    charError->addDescriptor(descError);
+
+    // Set descriptor values
+    descTempMOSFET->setValue(TEMP_MOSFET_DESC);
+    descTempMotor->setValue(TEMP_MOTOR_DESC);
+    descMotorCurrent->setValue(MOTOR_CURRENT_DESC);
+    descInputCurrent->setValue(INPUT_CURRENT_DESC);
+    descDutyCycle->setValue(DUTY_CYCLE_DESC);
+    descTacho->setValue(TACHO_DESC);
+    descRPM->setValue(RPM_DESC);
+    descVolts->setValue(VOLTS_DESC);
+    descWattHours->setValue(WATT_HOURS_DESC);
+    descError->setValue(ERROR_DESC);
+
 
     service->start();
 
@@ -68,19 +116,42 @@ void setupBLE(){
     Serial1.println("Waiting for client connections to notify...");
 }
 
+// Data buffers
+byte bufTempMOSFET[sizeof(((data_packet*)0)->tempMOSFET)];
+byte bufTempMotor[sizeof(((data_packet*)0)->tempMotor)];
+byte bufMotorCurrent[sizeof(((data_packet*)0)->motorCurrent)];
+byte bufInputCurrent[sizeof(((data_packet*)0)->inputCurrent)];
+byte bufDutyCycle[sizeof(((data_packet*)0)->dutyCycle)];
+byte bufTacho[sizeof(((data_packet*)0)->tacho)];
+byte bufRPM[sizeof(((data_packet*)0)->rpm)];
+byte bufVolts[sizeof(((data_packet*)0)->volts)];
+byte bufWattHours[sizeof(((data_packet*)0)->wattHours)];
+byte bufError[sizeof(((data_packet*)0)->error)];
+
 void sendBLE(data_packet* data){
+    memcpy(bufTempMOSFET, &(data->tempMOSFET), sizeof(data->tempMOSFET));
+    memcpy(bufTempMotor, &(data->tempMotor), sizeof(data->tempMotor));
+    memcpy(bufMotorCurrent, &(data->motorCurrent), sizeof(data->motorCurrent));
+    memcpy(bufInputCurrent, &(data->inputCurrent), sizeof(data->inputCurrent));
+    memcpy(bufDutyCycle, &(data->dutyCycle), sizeof(data->dutyCycle));
+    memcpy(bufTacho, &(data->tacho), sizeof(data->tacho));
+    memcpy(bufRPM, &(data->rpm), sizeof(data->rpm));
+    memcpy(bufVolts, &(data->volts), sizeof(data->volts));
+    memcpy(bufWattHours, &(data->wattHours), sizeof(data->wattHours));
+    memcpy(bufError, &(data->error), sizeof(data->error));
+
     // loop sending values with notification to clients
-    charTempMOSFET->setValue((uint8_t *)&(data->tempMOSFET), sizeof(data->tempMOSFET));
-    charTempMotor->setValue((uint8_t *)&(data->tempMotor), sizeof(data->tempMotor));
-    charMotorCurrent->setValue((uint8_t *)&(data->motorCurrent), sizeof(data->motorCurrent));
-    charInputCurrent->setValue((uint8_t *)&(data->inputCurrent), sizeof(data->inputCurrent));
-    charDutyCycle->setValue((uint8_t *)&(data->dutyCycle), sizeof(data->dutyCycle));
-    charTacho->setValue((uint8_t *)&(data->tacho), sizeof(data->tacho));
-    charRPM->setValue((uint8_t *)&(data->rpm), sizeof(data->rpm));
-    charVolts->setValue((uint8_t *)&(data->volts), sizeof(data->volts));
-    charWattHours->setValue((uint8_t *)&(data->wattHours), sizeof(data->wattHours));
-    charError->setValue((uint8_t *)&(data->error), sizeof(data->error));
-    
+    charTempMOSFET->setValue((uint8_t *)bufTempMOSFET, sizeof(data->tempMOSFET));
+    charTempMotor->setValue((uint8_t *)bufTempMotor, sizeof(data->tempMotor));
+    charMotorCurrent->setValue((uint8_t *)bufMotorCurrent, sizeof(data->motorCurrent));
+    charInputCurrent->setValue((uint8_t *)bufInputCurrent, sizeof(data->inputCurrent));
+    charDutyCycle->setValue((uint8_t *)bufDutyCycle, sizeof(data->dutyCycle));
+    charTacho->setValue((uint8_t *)bufTacho, sizeof(data->tacho));
+    charRPM->setValue((uint8_t *)bufRPM, sizeof(data->rpm));
+    charVolts->setValue((uint8_t *)bufVolts, sizeof(data->volts));
+    charWattHours->setValue((uint8_t *)bufWattHours, sizeof(data->wattHours));
+    charError->setValue((uint8_t *)bufError, sizeof(data->error));
+
     charTempMOSFET->notify();
     charTempMotor->notify();
     charMotorCurrent->notify();

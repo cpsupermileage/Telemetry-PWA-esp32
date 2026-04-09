@@ -22,6 +22,19 @@
 #define WATT_HOURS "2AF2" // Energy
 #define ERROR "2BBB" // Status flags
 
+#define DESC_USER_DESCRIPTION "2901"
+
+#define TEMP_MOSFET_DESC "MOSFET Temperature"
+#define TEMP_MOTOR_DESC "Motor Temperature"
+#define MOTOR_CURRENT_DESC "Motor Current"
+#define INPUT_CURRENT_DESC "Input Current"
+#define DUTY_CYCLE_DESC "Duty Cycle"
+#define TACHO_DESC "Tacho"
+#define RPM_DESC "RPM"
+#define VOLTS_DESC "Volts"
+#define WATT_HOURS_DESC "Watt Hours"
+#define ERROR_DESC "Error Code"
+
 
 void setupBLE();
 
