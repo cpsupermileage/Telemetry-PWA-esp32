@@ -1,7 +1,7 @@
 #include "vesc_link.h"
 
 VescUart UART; //object that will recive all the values from vesc
-struct data_packet next_data = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0L, 0.0f, 0.0f, 0.0f, (uint8_t)0};
+struct data_packet next_data = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0L, 0.0f, 0.0f, (uint8_t)0};
 
 void THD_SERIAL(){
     Serial.println("Getting values...");
@@ -27,7 +27,6 @@ void THD_SERIAL(){
         #ifdef TACHO_FROM_HALL
         next_data.tacho = getTacho();
         #endif
-        next_data.rpm = UART.data.rpm;
         next_data.volts = UART.data.inpVoltage;
         next_data.wattHours = UART.data.wattHours;
         next_data.error = UART.data.error;
@@ -44,8 +43,6 @@ void THD_SERIAL(){
         Serial.print(next_data.dutyCycle);
         Serial.print(" tacho: ");
         Serial.print(next_data.tacho);
-        Serial.print(" rpm: ");
-        Serial.print(next_data.rpm);
         Serial.print(" volts: ");
         Serial.print(next_data.volts);
         Serial.print(" wattHours: ");
@@ -76,5 +73,3 @@ void UART_setup() {
 struct data_packet* get_packet(){
     return &next_data;
 }
-
-

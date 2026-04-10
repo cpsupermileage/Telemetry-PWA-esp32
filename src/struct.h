@@ -11,7 +11,6 @@ struct data_packet{
     float inputCurrent;
     float dutyCycle;
     long tacho;
-    float rpm;
     float volts;
     float wattHours;
     uint8_t error;

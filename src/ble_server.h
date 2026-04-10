@@ -17,7 +17,6 @@
 #define INPUT_CURRENT "2AE0" // Avg Current
 #define DUTY_CYCLE "2C10" // Work Cycle Data
 #define TACHO "2C09" // Rotational Speed
-#define RPM "2A67" // Location and speed
 #define VOLTS "2B18" // Voltage
 #define WATT_HOURS "2AF2" // Energy
 #define ERROR "2BBB" // Status flags
@@ -30,7 +29,6 @@
 #define INPUT_CURRENT_DESC "Input Current"
 #define DUTY_CYCLE_DESC "Duty Cycle"
 #define TACHO_DESC "Tacho"
-#define RPM_DESC "RPM"
 #define VOLTS_DESC "Volts"
 #define WATT_HOURS_DESC "Watt Hours"
 #define ERROR_DESC "Error Code"

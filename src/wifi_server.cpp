@@ -27,7 +27,6 @@ void sendData() {
     doc["inputCurrent"] = std::to_string(data->inputCurrent);
     doc["dutyCycle"] = std::to_string(data->dutyCycle);
     doc["tacho"] = std::to_string(data->tacho);
-    doc["rpm"] = std::to_string(data->rpm);
     doc["volts"] = std::to_string(data->volts);
     doc["wattHours"] = std::to_string(data->wattHours);
     doc["error"] = std::to_string(data->error);
