@@ -63,7 +63,11 @@ void THD_SERIAL(){
 
 void UART_setup() {
 
-    Serial1.begin(VESC_BAUD_RATE, SERIAL_8N1, RX, TX, VESC_INVERT_TX_RX);
+    #ifdef VESC_INVERT_TX_RX
+    Serial1.begin(VESC_BAUD_RATE, SERIAL_8N1, TX, RX);
+    #else
+    Serial1.begin(VESC_BAUD_RATE, SERIAL_8N1, RX, TX);
+    #endif
     UART.setSerialPort(&Serial1);
 
     Serial.println("Serial initialized...");
